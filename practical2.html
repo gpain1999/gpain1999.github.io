@@ -279,6 +279,9 @@ $(document).ready(function () {
   <a href="practical1.html">Practical 1</a>
 </li>
 <li>
+  <a href="practical2.html">Practical 2</a>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
       </ul>
@@ -338,8 +341,8 @@ lines(vertical,vertical*(2-vertical),type=&quot;l&quot;,col=&quot;red&quot;)</co
 <pre class="r"><code>plot(sort(y),vertical,type=&quot;l&quot;,xlab=&quot;y&quot;,main=&quot;repartion function of y&quot;)
 lines(vertical,vertical^2,type=&quot;l&quot;,col=&quot;red&quot;)</code></pre>
 <p><img src="practical2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>The two curves merge, we can conclude the accuracy of the formula. <span class="math inline">\(F_y(y)=y^{2}\)</span> so <span class="math inline">\(f_(yx)=2y\)</span></p>
-<p>$f_z(z) : $</p>
+<p>The two curves merge, we can conclude the accuracy of the formula. <span class="math inline">\(F_y(y)=y^{2}\)</span> so <span class="math inline">\(f_y(y)=2y\)</span></p>
+<p><span class="math inline">\(f_z(z) :\)</span></p>
 <pre class="r"><code>library(ggplot2)
 ggplot(z, aes(x=x, y=y) ) +
   stat_density_2d(aes(fill = ..level..), geom = &quot;polygon&quot;)</code></pre>
