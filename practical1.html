@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Practical 1</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Guillaume Pain Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="practical1.html">Practical 1</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Practical 1</h1>
+
+</div>
+
+
+<p>#Part 1 :</p>
+<p>Import the package and dataset.</p>
+<pre class="r"><code>#install.packages(pkgs=&quot;http://www.karlin.mff.cuni.cz/~hlavka/sms2/MSES_1.1.tar.gz&quot;,repos=NULL,type=&quot;source&quot;)
+#install.packages(pkgs=&quot;http://www.karlin.mff.cuni.cz/~hlavka/sms2/MSES_1.1.zip&quot;,repos=NULL)
+library(SMSdata)
+data(plasma) </code></pre>
+<p>I choose plasma dataset for this works.</p>
+<p>#Part 2 :</p>
+<p>Understanding the dataset</p>
+<pre class="r"><code>dim(plasma)</code></pre>
+<pre><code>## [1] 10  4</code></pre>
+<pre class="r"><code>n &lt;- dim(plasma)[1]
+p &lt;- dim(plasma)[2]</code></pre>
+<p>The dataset have 10 observation and 4 variables.</p>
+<p>We can look in more detail at the variables</p>
+<pre class="r"><code>summary(plasma)</code></pre>
+<pre><code>##      group        8am             11am            3pm       
+##  Group 1:7   Min.   : 89.0   Min.   : 83.0   Min.   : 83.0  
+##  Group 2:3   1st Qu.:106.0   1st Qu.:119.5   1st Qu.:101.5  
+##              Median :116.0   Median :131.5   Median :108.0  
+##              Mean   :118.5   Mean   :127.9   Mean   :112.6  
+##              3rd Qu.:134.0   3rd Qu.:138.5   3rd Qu.:124.0  
+##              Max.   :151.0   Max.   :173.0   Max.   :147.0</code></pre>
+<p>Description of the dataset :</p>
+<p>The evolution of citrate concentration in the plasma is observed at 3 different times of day, 8 am, 11 am, and 3 pm, for two groups of patients. Each group follows a different diet.</p>
+<p>So we have 1 Categorical Variable (group) and 3 numeric variables (8am, 11am and 3pm)</p>
+<p>For the next part of the analyse we must change the names of the variable because having a number as the first character can be problematic</p>
+<pre class="r"><code>colnames(plasma)[2:4]&lt;-c(&quot;v8am&quot;,&quot;v11am&quot;,&quot;v3pm&quot;)
+attach(plasma)</code></pre>
+<p>#Part 3 : Univariate analysis</p>
+<p>Before starting the multivariate analysis, it is always important to take the time to perform a small univariate analysis in order to get to know the data set.</p>
+<p>Group :</p>
+<pre class="r"><code>plot(group)</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The observations are separate in two groups. 7 in the 1st and 3 in the second group. Each group follows a different diet.</p>
+<p>8am :</p>
+<pre class="r"><code>hist(v8am,breaks =5,main =&quot;Histogram of citrate concentration in the plasma at 8 am&quot;,freq = F,xlab =&quot;8 am&quot;)</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>quantile(v8am)</code></pre>
+<pre><code>##   0%  25%  50%  75% 100% 
+##   89  106  116  134  151</code></pre>
+<pre class="r"><code>summary(v8am)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    89.0   106.0   116.0   118.5   134.0   151.0</code></pre>
+<pre class="r"><code>var(v8am)</code></pre>
+<pre><code>## [1] 432.9444</code></pre>
+<pre class="r"><code>cv &lt;- sd(v8am) / mean(v8am) * 100
+cv</code></pre>
+<pre><code>## [1] 17.55892</code></pre>
+<p>The minimum is 89, the median is 116 and the maximum is 151.</p>
+<p>Mean : 118.5</p>
+<p>variance : 432.94</p>
+<p>Coefficient of Variation : 17.56</p>
+<p>11am :</p>
+<pre class="r"><code>hist(v11am,breaks =5,main =&quot;Histogram of citrate concentration in the plasma at 11 am&quot;,freq = F,xlab =&quot;11 am&quot;)</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>quantile(v11am)</code></pre>
+<pre><code>##    0%   25%   50%   75%  100% 
+##  83.0 119.5 131.5 138.5 173.0</code></pre>
+<pre class="r"><code>summary(v11am)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    83.0   119.5   131.5   127.9   138.5   173.0</code></pre>
+<pre class="r"><code>var(v11am)</code></pre>
+<pre><code>## [1] 662.3222</code></pre>
+<pre class="r"><code>cv_b &lt;- sd(v11am) / mean(v11am) * 100
+cv_b</code></pre>
+<pre><code>## [1] 20.12167</code></pre>
+<p>The minimum is 83, the median is 127.9 and the maximum is 173.</p>
+<p>Mean : 127.9</p>
+<p>variance : 662.32</p>
+<p>Coefficient of Variation : 20.12</p>
+<p>We can see a increase values to the means, and the variance has increased too. The citrate concentration are less homogeneous at 11am than 8am.</p>
+<p>3pm :</p>
+<pre class="r"><code>hist(v3pm,breaks =5,main =&quot;Histogram of citrate concentration in the plasma at 3 pm&quot;,freq = F,xlab =&quot;3 pm&quot;)</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>quantile(v3pm)</code></pre>
+<pre><code>##    0%   25%   50%   75%  100% 
+##  83.0 101.5 108.0 124.0 147.0</code></pre>
+<pre class="r"><code>summary(v3pm)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    83.0   101.5   108.0   112.6   124.0   147.0</code></pre>
+<pre class="r"><code>var(v3pm)</code></pre>
+<pre><code>## [1] 325.1556</code></pre>
+<pre class="r"><code>cv_c &lt;- sd(v3pm) / mean(v3pm) * 100
+cv_c</code></pre>
+<pre><code>## [1] 16.01427</code></pre>
+<p>The minimum is 83, the median is 108 and the maximum is 147.</p>
+<p>Mean : 112.6</p>
+<p>variance : 325.16</p>
+<p>Coefficient of Variation : 16.01</p>
+<p>We can see a decrease values to the means, and the variance has decreased too. The citrate concentration are more homogeneous at 3pm than 11am. We return to the 8am citrate concentration level.</p>
+<p>#Part 4 : Multivariate analysis</p>
+<p>In first we can comparate the distribution of the 3 different time schedules.</p>
+<pre class="r"><code>boxplot(plasma[,2:4])</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We can conclude the same thing as in the previous section, the citrate concentration in the plasma increase and then decreases. We can see 2 extrem values at 11 am.</p>
+<p>Parallel Coordinate Plots : We make this graph to find (or not) a kind of dependency between the different covariates</p>
+<pre class="r"><code>library(MASS)</code></pre>
+<pre><code>## Warning: package &#39;MASS&#39; was built under R version 3.6.3</code></pre>
+<pre class="r"><code>colorVector &lt;- rep(&quot;black&quot;, dim(plasma)[1])
+colorVector[group == &quot;Group 1&quot;] &lt;- &quot;red&quot;
+colorVector[group == &quot;Group 2&quot;] &lt;- &quot;green&quot;
+
+
+parcoord(plasma[,2:4],col=colorVector)</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>The greens observation represente patients of the group 2.</p>
+<p>Group 2 has a lower citrate concentration in the plasma than the rest of the population.</p>
+<p>At 3pm all group 2 patients have all the lowest concentration.</p>
+<p>And in the majority of cases, the people witj a importante citrate concentration at 8am were always the same at other times.</p>
+<pre class="r"><code>cor(plasma[,2:4])</code></pre>
+<pre><code>##            v8am     v11am      v3pm
+## v8am  1.0000000 0.7833958 0.7054034
+## v11am 0.7833958 1.0000000 0.7979220
+## v3pm  0.7054034 0.7979220 1.0000000</code></pre>
+<p>All of corelation are positive.</p>
+<p>Evolution between the times :</p>
+<p>8am -&gt; 11 am</p>
+<pre class="r"><code>plot(v8am,v11am,col=group)
+abline(1,1)</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Red : Group 2</p>
+<p>black : Group 1</p>
+<p>Why is the line x=y?</p>
+<p>If the point is above: increase your rate between the two times</p>
+<p>If the point is below: decrease the rate between the two times</p>
+<p>We have 8 points above and 2 point below, for the majority of patients the citrate concentration in the plasma increase between the 2 times.</p>
+<p>We cannot necessarily notice a group effect because the points of the different colours are above and below the line.</p>
+<p>11am -&gt; 3 pm</p>
+<pre class="r"><code>plot(v11am,v3pm,col=group)
+abline(1,1)</code></pre>
+<p><img src="practical1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>We can see that here the concentration has dropped between the two time. (8/10 observations)</p>
+<p>But still no group effect. The low values of the second group are still low but we do not see a more pronounced decrease than group 1. The values of group 2 are lower but for each time.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
