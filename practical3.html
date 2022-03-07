@@ -323,7 +323,7 @@ plot(AX,BX)</code></pre>
 <p><img src="practical3_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <pre class="r"><code>cov(AX,BX)</code></pre>
 <pre><code>##              [,1]
-## [1,] -0.005147438</code></pre>
+## [1,] -0.005696654</code></pre>
 <p>We can deduce the independence between <span class="math inline">\(\mathbb{AX}\)</span> and <span class="math inline">\(\mathbb{BX}\)</span>.</p>
 <pre class="r"><code>Tab&lt;-cbind(AX,BX)
 plot(Tab[,1] ~ Tab[,2], pch = 21, bg = &quot;gray&quot;)
@@ -331,9 +331,7 @@ abline(lm(Tab[,1] ~ Tab[,2]), col = &quot;red&quot;, lwd = 2)</code></pre>
 <p><img src="practical3_files/figure-html/unnamed-chunk-2-1.png" width="672" /> <span class="math inline">\(\huge{Part \ 2 : the \ normal \ distribution \ of \ all \ marginals \ necessarily \ implies \ the \ joint \ normality \ of \ the \ whole \ random \ vector?}\)</span></p>
 <p>Random vector : <span class="math inline">\({X \sim\mathcal{N}(0,1)}\)</span></p>
 <p><span class="math inline">\({U \sim\mathcal{U}[0;1]}\)</span></p>
-${variable  Z  = {
-<span class="math display">\[\begin{matrix}-1 \:\: if \:\: u \in [0;0.5] \\1 \:\: elif\end{matrix}\]</span>
-<p>.} $</p>
+<p><span class="math inline">\({variable \ Z \ = \left\{\begin{matrix}-1 \:\: if \:\: u \in [0;0.5] \\1 \:\:elif\end{matrix}\right.}\)</span></p>
 <p><span class="math inline">\({We \ pose \ Y \ = ZX}\)</span></p>
 <p><span class="math inline">\(F_y(y)=P(Y\leq y)=P(ZX\leq y)=P(XZ\leq y |Z=1 )+P(XZ\leq y |Z=-1 )\)</span></p>
 <p><span class="math inline">\(F_y(y)=P(X\leq y |Z=1 )+P(-X\leq y |Z=-1 )\)</span></p>
@@ -352,7 +350,7 @@ shapiro.test(Y) # normal ok</code></pre>
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  Y
-## W = 0.99959, p-value = 0.3859</code></pre>
+## W = 0.99982, p-value = 0.97</code></pre>
 <p>The Shapiro–Wilk test is a test of normality in frequentist statistics. It was published in 1965 by Samuel Sanford Shapiro and Martin Wilk.</p>
 <p><span class="math inline">\(H_0 : Y\sim\mathcal{N}(a,b) \ \ \ H_1 : Y \not\sim\mathcal{N}(a,b)\)</span></p>
 <p>We can’t rejected <span class="math inline">\(H_0\)</span> , <span class="math inline">\(Y\sim\mathcal{N}(a,b)\)</span></p>
@@ -370,9 +368,9 @@ hist(Y, prob = TRUE, col = &quot;white&quot;,
 lines(Y2, funY, col = 2, lwd = 2) </code></pre>
 <p><img src="practical3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>mean(Y)</code></pre>
-<pre><code>## [1] 0.02297456</code></pre>
+<pre><code>## [1] -0.02686108</code></pre>
 <pre class="r"><code>sd(Y)</code></pre>
-<pre><code>## [1] 1.001517</code></pre>
+<pre><code>## [1] 1.004555</code></pre>
 <p><span class="math inline">\(Y\sim\mathcal{N}(0,1)\)</span></p>
 <p>Definition :</p>
 <p>That is <span class="math inline">\(U = (u_1....u_d) \ and \ \forall i \ : u_i \sim \mathcal{N}(a,b)\)</span></p>
@@ -407,7 +405,8 @@ lines(XY2, funXY, col = 2, lwd = 2) </code></pre>
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  X + Y
-## W = 0.86205, p-value &lt; 2.2e-16</code></pre>
+## W = 0.85947, p-value &lt; 2.2e-16</code></pre>
+<p>In view of p-values we can conclude the none the joint normality with normal distribution of all marginals.</p>
 
 
 
