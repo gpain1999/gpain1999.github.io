@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Guillaume Pain" />
+
+
+<title>Practical 6</title>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Guillaume Pain Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="practical1.html">Practical 1</a>
+</li>
+<li>
+  <a href="practical2.html">Practical 2</a>
+</li>
+<li>
+  <a href="practical3.html">Practical 3</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Practical 6</h1>
+<h4 class="author">Guillaume Pain</h4>
+<h4 class="date">23/03/2022</h4>
+
+</div>
+
+
+<p>Import Data and pacakge</p>
+<pre class="r"><code>#install.packages(pkgs=&quot;http://www.karlin.mff.cuni.cz/~hlavka/sms2/SMSdata_1.0.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)
+library(SMSdata)
+data(food)
+library(&quot;FactoMineR&quot;)</code></pre>
+<pre><code>## Warning: le package &#39;FactoMineR&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre class="r"><code>library(&quot;factoextra&quot;)</code></pre>
+<pre><code>## Warning: le package &#39;factoextra&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## Le chargement a nécessité le package : ggplot2</code></pre>
+<pre><code>## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
+<pre class="r"><code>library(&quot;qgraph&quot;)</code></pre>
+<pre><code>## Warning: le package &#39;qgraph&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre class="r"><code>library(corrplot)</code></pre>
+<pre><code>## corrplot 0.92 loaded</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Warning: le package &#39;tidyverse&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v tibble  3.1.6     v dplyr   1.0.8
+## v tidyr   1.2.0     v stringr 1.4.0
+## v readr   2.1.2     v forcats 0.5.1
+## v purrr   0.3.4</code></pre>
+<pre><code>## Warning: le package &#39;readr&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## Warning: le package &#39;forcats&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<p>The objective of this assignment is to perform a PCA on data. PCA is used to describe a dataset with many individuals and quantitative variables. The analysis extracts the relevant information and summarises it in the form of principal components, new axes to describe the dataset.</p>
+<p><span class="math inline">\(\huge{First \ \ step :\ Explain \ data}\)</span></p>
+<p>The data set consists of the average expenditures on food for several different types of families in France (manual workers = MA, employees = EM, managers = CA) with different numbers of children (2,3,4 or 5 children).</p>
+<p>We can create two illustrative variables. Works and numbers of children.</p>
+<pre class="r"><code>food$work_type&lt;-str_sub(row.names(food), 1, 2)
+food$number_children&lt;-as.numeric(str_sub(row.names(food), 3, 3))</code></pre>
+<p><span class="math inline">\(\huge{Second \ \ step : Analyse \ the \ link \ between \ variables.}\)</span></p>
+<p>PCA variable :</p>
+<pre class="r"><code>qgraph(cor(food[,1:7]))</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>corrplot(cor(food[,1:7]), method=&quot;ellipse&quot;)</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-3-2.png" width="672" /> We note a large 4-variable relationship :</p>
+<ul>
+<li><p>Vegetables</p></li>
+<li><p>Fruits</p></li>
+<li><p>Meat</p></li>
+<li><p>Poultry</p></li>
+</ul>
+<p>Other link :</p>
+<ul>
+<li>Bread and wine.</li>
+</ul>
+<p>PCA variable vs type of job :</p>
+<pre class="r"><code>list_var&lt;-colnames(food)[1:7]
+pval_list &lt;-rep(NA,7)
+for(i in 1:7){
+  pval_list[i]&lt;-round(summary(aov(food[,i] ~ food$work_type))[[1]][1,5],4)
+
+}
+
+(TAB&lt;-cbind(list_var,pval_list))</code></pre>
+<pre><code>##      list_var     pval_list
+## [1,] &quot;bread&quot;      &quot;0.7619&quot; 
+## [2,] &quot;vegetables&quot; &quot;0.1276&quot; 
+## [3,] &quot;fruits&quot;     &quot;0.0028&quot; 
+## [4,] &quot;meat&quot;       &quot;0.0059&quot; 
+## [5,] &quot;poultry&quot;    &quot;0.0011&quot; 
+## [6,] &quot;milk&quot;       &quot;0.9125&quot; 
+## [7,] &quot;wine&quot;       &quot;0.0842&quot;</code></pre>
+<p>fruits, meat, poultry and Wine-consomation have a link with the job.</p>
+<p>PCA variable vs number of children :</p>
+<pre class="r"><code>list_var&lt;-colnames(food)[1:7]
+pval_list_2 &lt;-rep(NA,7)
+for(i in 1:7){
+  pval_list_2[i]&lt;-round(summary(aov(food[,i] ~ food$number_children))[[1]][1,5],4)
+
+}
+
+(TAB&lt;-cbind(list_var,pval_list_2))</code></pre>
+<pre><code>##      list_var     pval_list_2
+## [1,] &quot;bread&quot;      &quot;2e-04&quot;    
+## [2,] &quot;vegetables&quot; &quot;0.0089&quot;   
+## [3,] &quot;fruits&quot;     &quot;0.1943&quot;   
+## [4,] &quot;meat&quot;       &quot;0.0785&quot;   
+## [5,] &quot;poultry&quot;    &quot;0.1735&quot;   
+## [6,] &quot;milk&quot;       &quot;0&quot;        
+## [7,] &quot;wine&quot;       &quot;0.8763&quot;</code></pre>
+<p>bread, vegetables and milk have a link with number of children.</p>
+<p><span class="math inline">\(\huge{Second \ \ step :\ PCA \ Realisation}\)</span></p>
+<pre class="r"><code>res&lt;-PCA(food, scale.unit = TRUE, ncp = 5, 
+    quanti.sup = 9, quali.sup = 8, graph = F)</code></pre>
+<p>Quality of representation of axes.</p>
+<pre class="r"><code>fviz_eig(res, addlabels = TRUE, ylim = c(0, 65))</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>(eig.val &lt;- round(get_eigenvalue(res),1))</code></pre>
+<pre><code>##       eigenvalue variance.percent cumulative.variance.percent
+## Dim.1        4.3             61.9                        61.9
+## Dim.2        1.8             26.1                        88.1
+## Dim.3        0.6              9.0                        97.1
+## Dim.4        0.1              1.8                        98.9
+## Dim.5        0.1              0.8                        99.7
+## Dim.6        0.0              0.3                       100.0
+## Dim.7        0.0              0.0                       100.0</code></pre>
+<p>88.1% of information is present in the two first factorial axes.</p>
+<pre class="r"><code>var &lt;- get_pca_var(res)</code></pre>
+<p>Variable graph :</p>
+<pre class="r"><code>fviz_pca_var(res, col.var = &quot;cos2&quot;,
+             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+             repel = TRUE 
+             )</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>What does each axis represent?</p>
+<pre class="r"><code>corrplot(var$contrib, is.corr=FALSE)</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code># Coordonnee
+round(var$coord[,1:2],3)</code></pre>
+<pre><code>##             Dim.1  Dim.2
+## bread       0.499  0.842
+## vegetables  0.970  0.133
+## fruits      0.929 -0.278
+## meat        0.962 -0.191
+## poultry     0.911 -0.266
+## milk        0.584  0.707
+## wine       -0.428  0.648</code></pre>
+<p>1st axis : it represents vegetables, fruits, meat and poultry positively. The people on the right side of the graph of individuals are people consuming a lot of these products.</p>
+<p>2nd axis : This axis represents the variables milk vine and bread.Individuals at the top of the individual graph consume more than the average of these products.</p>
+<pre class="r"><code># Cos2:répresentation quality
+round(var$cos2[,1:2],3)</code></pre>
+<pre><code>##            Dim.1 Dim.2
+## bread      0.249 0.708
+## vegetables 0.940 0.018
+## fruits     0.863 0.077
+## meat       0.926 0.037
+## poultry    0.830 0.071
+## milk       0.341 0.500
+## wine       0.183 0.420</code></pre>
+<p>We note the bad represenation of the wine variable. It is preferable not to interpret this variable for the rest of the analysis</p>
+<p>Graph of individuals</p>
+<pre class="r"><code>ind &lt;- get_pca_ind(res)</code></pre>
+<p>quality and contribution</p>
+<pre class="r"><code>fviz_pca_ind(res, col.ind = &quot;cos2&quot;, 
+             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+             repel = TRUE # Avoid text overlapping (slow if many points)
+             )</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>All individuals seem to be well represented on these first two axes.With the exception of CA2.</p>
+<pre class="r"><code># Total contribution on PC1 and PC2
+fviz_contrib(res, choice = &quot;ind&quot;, axes = 1:2)</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-14-1.png" width="672" /> This graph shows us that the individual “CA5” contributes more than 39% to the creation of the first two axes.</p>
+<p>Moreover, “CA2” and “EM4” contribute less than 3% to this creation.</p>
+<pre class="r"><code>fviz_pca_ind(res,  label=&quot;none&quot;, habillage=8)</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>fviz_pca_ind(res,  label=&quot;none&quot;, habillage=9)</code></pre>
+<p><img src="practical6_files/figure-html/unnamed-chunk-15-2.png" width="672" /> We notice that the groups seem to form lines.</p>
+<p>For the graph highlighting the type of work, we can see that the line formed by the “MA” points is further to the left than the “CA” points.</p>
+<p>For the graph showing the number of children in colour, the lines are present but in the other direction.</p>
+<p>The more children the family has, the further to the top right they are for the same type of occupation. This seems to be correct, as the top right corner means that all products except wine are consumed more than the average.</p>
+<p>With the same number of children, families with a manual trade (MA) seem to consume more wine.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
