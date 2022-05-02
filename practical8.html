@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Guillaume Pain" />
+
+
+<title>Practical 8</title>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Guillaume Pain Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="practical1.html">Practical 1</a>
+</li>
+<li>
+  <a href="practical2.html">Practical 2</a>
+</li>
+<li>
+  <a href="practical3.html">Practical 3</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Practical 8</h1>
+<h4 class="author">Guillaume Pain</h4>
+<h4 class="date">26/04/2022</h4>
+
+</div>
+
+
+<pre class="r"><code>set.seed(123)
+data&lt;-read.csv2(&quot;C:/Users/guill/OneDrive/Documents/Charles_University/Multivariate analysis/Europe.csv&quot;,sep=&quot;;&quot;,header = TRUE,row.names = 1,dec=&quot;,&quot;)
+library(FactoMineR)</code></pre>
+<pre><code>## Warning: le package &#39;FactoMineR&#39; a été compilé avec la version R 4.1.3</code></pre>
+<p>How many groups to form ?</p>
+<pre class="r"><code>data_scale &lt;- scale(data)
+
+Kmax &lt;- 10
+resKmeans &lt;- list()
+criterion &lt;- rep(NA, Kmax)
+for (K in 1:Kmax){
+  resKmeans[[K]] &lt;- kmeans(data_scale, K, nstart = 50)
+  criterion[K] &lt;- resKmeans[[K]]$tot.withinss
+}
+plot(1:Kmax, criterion, type=&quot;b&quot;, xlab=&quot;K&quot;, ylab=&quot;inertie-intra&quot;)</code></pre>
+<p><img src="practical8_files/figure-html/unnamed-chunk-2-1.png" width="672" /> 5 groups will be formed</p>
+<p>Cluster Dendrogram</p>
+<pre class="r"><code>D &lt;- dist(data_scale) ### for the euclidian distance by default
+HC1 &lt;- hclust(D)
+
+cutHC1 = cutree(HC1, 5)
+labelColors = c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;,&quot;black&quot;,&quot;gold&quot;)
+
+# function to get color labels
+colLab &lt;- function(n) {
+    if (is.leaf(n)) {
+        a &lt;- attributes(n)
+        labCol &lt;- labelColors[cutHC1[which(names(cutHC1) == a$label)]]
+        attr(n, &quot;nodePar&quot;) &lt;- c(a$nodePar, lab.col = labCol)
+    }
+    n
+}
+# using dendrapply
+clusDendro = dendrapply(as.dendrogram(HC1), colLab)
+plot(clusDendro, main = &quot;Cool Dendrogram&quot;, type = &quot;triangle&quot;)</code></pre>
+<p><img src="practical8_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>res.pca &lt;- PCA(data_scale,scale.unit = TRUE, graph = TRUE)</code></pre>
+<pre><code>## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+## increasing max.overlaps</code></pre>
+<p><img src="practical8_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="practical8_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>round(resKmeans[[6]]$centers,2)</code></pre>
+<pre><code>##   Fertility GDP.per.capita Life.expectancy Meat.consumption Median.age
+## 1     -0.21          -0.12            0.21             0.22       0.79
+## 2     -0.16          -0.67           -1.41            -0.80       0.18
+## 3      0.05           0.51            0.86             0.62       0.11
+## 4      1.92          -1.08           -0.96            -1.51      -1.98
+## 5     -0.25           1.85            0.79             1.14      -0.92
+## 6     -0.48          -1.11           -1.08            -1.23      -0.47
+##   Population.growth Sex.ratio Suicide.rate Urbanization.rate
+## 1             -0.36     -0.28        -0.19             -0.36
+## 2             -1.17     -1.83         1.99             -0.07
+## 3              0.38      0.61        -0.13              1.16
+## 4              0.67      0.11        -0.89             -0.50
+## 5              1.52      1.35        -0.43              0.24
+## 6             -0.45      0.16        -0.52             -1.58</code></pre>
+<p>explication of each groups :</p>
+<pre class="r"><code>table_of_link&lt;-data.frame(matrix(NA,5,9))
+colnames(table_of_link)&lt;-colnames(data_scale)
+row.names(table_of_link)&lt;-c(&quot;Group_1&quot;,&quot;Group_2&quot;,&quot;Group_3&quot;,&quot;Group_4&quot;,&quot;Group_5&quot;)</code></pre>
+<pre class="r"><code>for(i in 1:5){
+  for(j in 1:9){
+    test&lt;-t.test(data_scale[,j]~(resKmeans[[6]]$cluster==i))
+    table_of_link[i,j]&lt;-round(test$p.value,3)
+  }
+}
+table_of_link</code></pre>
+<pre><code>##         Fertility GDP.per.capita Life.expectancy Meat.consumption Median.age
+## Group_1     0.273          0.523           0.308            0.219      0.000
+## Group_2     0.693          0.027           0.000            0.000      0.559
+## Group_3     0.864          0.004           0.000            0.009      0.601
+## Group_4     0.035          0.021           0.098            0.000      0.078
+## Group_5     0.633          0.052           0.000            0.099      0.008
+##         Population.growth Sex.ratio Suicide.rate Urbanization.rate
+## Group_1             0.051     0.162        0.347             0.066
+## Group_2             0.073     0.000        0.002             0.747
+## Group_3             0.033     0.001        0.545             0.000
+## Group_4             0.247     0.839        0.000             0.282
+## Group_5             0.077     0.000        0.204             0.633</code></pre>
+<p>$ Group  1  :$</p>
+<pre class="r"><code>names(which(resKmeans[[6]]$cluster==1))</code></pre>
+<pre><code>##  [1] &quot;Austria&quot;        &quot;Bulgaria&quot;       &quot;Croatia&quot;        &quot;Czech Republic&quot;
+##  [5] &quot;Estonia&quot;        &quot;Germany&quot;        &quot;Greece&quot;         &quot;Hungary&quot;       
+##  [9] &quot;Italy&quot;          &quot;Poland&quot;         &quot;Portugal&quot;       &quot;Slovenia&quot;</code></pre>
+<pre class="r"><code>round(resKmeans[[6]]$centers[1,which(table_of_link[1,]&lt;0.075)],2)</code></pre>
+<pre><code>##        Median.age Population.growth Urbanization.rate 
+##              0.79             -0.36             -0.36</code></pre>
+<p>This is a group of countries with a significantly low average median age. These countries tend to have a low population increase compared to the other. In addition, the rate of humanisation of these countries is small.</p>
+<p>$ Group  2  :$</p>
+<pre class="r"><code>names(which(resKmeans[[6]]$cluster==2))</code></pre>
+<pre><code>## [1] &quot;Belarus&quot;   &quot;Latvia&quot;    &quot;Lithuania&quot; &quot;Russia&quot;    &quot;Ukraine&quot;</code></pre>
+<pre class="r"><code>round(resKmeans[[6]]$centers[2,which(table_of_link[2,]&lt;0.075)],2)</code></pre>
+<pre><code>##    GDP.per.capita   Life.expectancy  Meat.consumption Population.growth 
+##             -0.67             -1.41             -0.80             -1.17 
+##         Sex.ratio      Suicide.rate 
+##             -1.83              1.99</code></pre>
+<p>This group is made up of eastern countries that were part of the former USSR. These are countries with a lower than average GDP, life expectancy and meat consumption. The population is also growing very little. The number of women is proportionally higher. In addition, the suicide rate is significantly higher than in the other groups.</p>
+<p>$ Group  3  :$</p>
+<pre class="r"><code>names(which(resKmeans[[6]]$cluster==3))</code></pre>
+<pre><code>##  [1] &quot;Belgium&quot;        &quot;Denmark&quot;        &quot;Finland&quot;        &quot;France&quot;        
+##  [5] &quot;Iceland&quot;        &quot;Malta&quot;          &quot;Netherlands&quot;    &quot;Spain&quot;         
+##  [9] &quot;Sweden&quot;         &quot;United Kingdom&quot;</code></pre>
+<pre class="r"><code>round(resKmeans[[6]]$centers[3,which(table_of_link[3,]&lt;0.075)],2)</code></pre>
+<pre><code>##    GDP.per.capita   Life.expectancy  Meat.consumption Population.growth 
+##              0.51              0.86              0.62              0.38 
+##         Sex.ratio Urbanization.rate 
+##              0.61              1.16</code></pre>
+<p>This group seems to be the opposite of the previous group. GDP is higher than average (although Malta should bring the average down). Life expectancy is high, as is meat consumption and urbanisation. The population tends to grow more than in other countries. In addition, the male/female ratio is high.</p>
+<p>$ Group  4  :$</p>
+<pre class="r"><code>names(which(resKmeans[[6]]$cluster==4))</code></pre>
+<pre><code>## [1] &quot;Armenia&quot; &quot;Georgia&quot; &quot;Turkey&quot;</code></pre>
+<pre class="r"><code>round(resKmeans[[6]]$centers[4,which(table_of_link[4,]&lt;0.075)],2)</code></pre>
+<pre><code>##        Fertility   GDP.per.capita Meat.consumption     Suicide.rate 
+##             1.92            -1.08            -1.51            -0.89</code></pre>
+<p>This group consists of only three countries, all of which are in southern Eastern Europe (see Asia). These are countries with a high fertility rate. This is representative of a low GDP. Meat consumption is very low, as is suicide rate.</p>
+<p>$ Group  5  :$</p>
+<pre class="r"><code>names(which(resKmeans[[6]]$cluster==5))</code></pre>
+<pre><code>## [1] &quot;Cyprus&quot;     &quot;Ireland&quot;    &quot;Luxembourg&quot; &quot;Norway&quot;</code></pre>
+<pre class="r"><code>round(resKmeans[[6]]$centers[5,which(table_of_link[5,]&lt;0.075)],2)</code></pre>
+<pre><code>##  GDP.per.capita Life.expectancy      Median.age       Sex.ratio 
+##            1.85            0.79           -0.92            1.35</code></pre>
+<p>The latter group seems to be the richest. Life expectancy is higher than in other countries. In addition, the population is very young and predominantly male. They may be young Europeans who have migrated to these countries for their advantages in the world of work.</p>
+<p>PCA for visualisation.</p>
+<pre class="r"><code>res &lt;- PCA(data,scale.unit = TRUE, graph = FALSE)
+subset&lt;-res$ind$coord[,1:2]</code></pre>
+<pre class="r"><code>grpMeat&lt;- kmeans(subset, center=5, nstart=50)
+
+plot(subset,pch=19,col=5,cex=0.2)
+text(subset,labels=rownames(data), col=grpMeat$cluster+1,cex=0.6)
+means&lt;-grpMeat$centers
+points(means,col=c(2,3,4,5,6),cex=2,pch=4)</code></pre>
+<p><img src="practical8_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>We notice that the groups formed are no longer the same with this method</p>
+<pre class="r"><code>grpMeat&lt;- kmeans(subset, center=5, nstart=10)
+
+plot(subset,pch=19,col=5,cex=0.2)
+text(subset,labels=rownames(data), col=grpMeat$cluster+1)
+means&lt;-grpMeat$centers
+points(means,col=c(2,3,4,5,6),cex=2,pch=4)
+
+for(i in (1:nrow(data))){  
+    if (grpMeat$cluster[i]==1){
+        lines(c(subset[i,1],means[1,1]), c(subset[i,2],means[1,2]),col=2)
+    }
+    if (grpMeat$cluster[i]==2){
+        lines(c(subset[i,1],means[2,1]), c(subset[i,2],means[2,2]),col=3)
+    }
+    if (grpMeat$cluster[i]==3){
+        lines(c(subset[i,1],means[3,1]), c(subset[i,2],means[3,2]),col=4)
+    }
+    if (grpMeat$cluster[i]==4){
+        lines(c(subset[i,1],means[4,1]), c(subset[i,2],means[4,2]),col=5)
+    }
+    if (grpMeat$cluster[i]==5){
+        lines(c(subset[i,1],means[5,1]), c(subset[i,2],means[5,2]),col=6)
+    }
+  }</code></pre>
+<p><img src="practical8_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
