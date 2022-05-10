@@ -13,7 +13,7 @@
 <meta name="author" content="Guillaume Pain" />
 
 
-<title>Practical 6</title>
+<title>Practical 7</title>
 
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -270,7 +270,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Practical 6</h1>
+<h1 class="title toc-ignore">Practical 7</h1>
 <h4 class="author">Guillaume Pain</h4>
 <h4 class="date">23/03/2022</h4>
 
@@ -278,8 +278,10 @@ $(document).ready(function () {
 
 
 <p>Import Data and pacakge</p>
-<pre class="r"><code>#install.packages(pkgs=&quot;http://www.karlin.mff.cuni.cz/~hlavka/sms2/SMSdata_1.0.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)
-library(SMSdata)
+<pre class="r"><code>install.packages(pkgs=&quot;http://www.karlin.mff.cuni.cz/~hlavka/sms2/SMSdata_1.0.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)</code></pre>
+<pre><code>## Installation du package dans &#39;C:/Users/guill/OneDrive/Documents/R/win-library/4.1&#39;
+## (car &#39;lib&#39; n&#39;est pas spécifié)</code></pre>
+<pre class="r"><code>library(SMSdata)
 data(food)
 library(&quot;FactoMineR&quot;)</code></pre>
 <pre><code>## Warning: le package &#39;FactoMineR&#39; a été compilé avec la version R 4.1.3</code></pre>
@@ -303,134 +305,171 @@ library(&quot;FactoMineR&quot;)</code></pre>
 <pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<p>The objective of this assignment is to perform a PCA on data. PCA is used to describe a dataset with many individuals and quantitative variables. The analysis extracts the relevant information and summarises it in the form of principal components, new axes to describe the dataset.</p>
-<p><span class="math inline">\(\huge{First \ \ step :\ Explain \ data}\)</span></p>
-<p>The data set consists of the average expenditures on food for several different types of families in France (manual workers = MA, employees = EM, managers = CA) with different numbers of children (2,3,4 or 5 children).</p>
-<p>We can create two illustrative variables. Works and numbers of children.</p>
-<pre class="r"><code>food$work_type&lt;-str_sub(row.names(food), 1, 2)
-food$number_children&lt;-as.numeric(str_sub(row.names(food), 3, 3))</code></pre>
-<p><span class="math inline">\(\huge{Second \ \ step : Analyse \ the \ link \ between \ variables.}\)</span></p>
-<p>PCA variable :</p>
-<pre class="r"><code>qgraph(cor(food[,1:7]))</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>corrplot(cor(food[,1:7]), method=&quot;ellipse&quot;)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-3-2.png" width="672" /> We note a large 4-variable relationship :</p>
+<pre class="r"><code>library(psych)</code></pre>
+<pre><code>## Warning: le package &#39;psych&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;psych&#39;</code></pre>
+<pre><code>## Les objets suivants sont masqués depuis &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<p>Evaluate the correlation matrix</p>
+<pre class="r"><code>library(RcmdrMisc)</code></pre>
+<pre><code>## Warning: le package &#39;RcmdrMisc&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## Le chargement a nécessité le package : car</code></pre>
+<pre><code>## Le chargement a nécessité le package : carData</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;car&#39;</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:psych&#39;:
+## 
+##     logit</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:dplyr&#39;:
+## 
+##     recode</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:purrr&#39;:
+## 
+##     some</code></pre>
+<pre><code>## Le chargement a nécessité le package : sandwich</code></pre>
+<pre><code>## Warning: le package &#39;sandwich&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;RcmdrMisc&#39;</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:psych&#39;:
+## 
+##     reliability</code></pre>
+<pre class="r"><code>rcorr.adjust(food) # This function is build into R Commander.</code></pre>
+<pre><code>## 
+##  Pearson correlations:
+##             bread vegetables  fruits    meat poultry   milk    wine
+## bread      1.0000     0.5931  0.1961  0.3213  0.2480 0.8556  0.3038
+## vegetables 0.5931     1.0000  0.8563  0.8811  0.8268 0.6628 -0.3565
+## fruits     0.1961     0.8563  1.0000  0.9595  0.9255 0.3322 -0.4863
+## meat       0.3213     0.8811  0.9595  1.0000  0.9818 0.3746 -0.4372
+## poultry    0.2480     0.8268  0.9255  0.9818  1.0000 0.2329 -0.4002
+## milk       0.8556     0.6628  0.3322  0.3746  0.2329 1.0000  0.0069
+## wine       0.3038    -0.3565 -0.4863 -0.4372 -0.4002 0.0069  1.0000
+## 
+##  Number of observations: 12 
+## 
+##  Pairwise two-sided p-values:
+##            bread  vegetables fruits meat   poultry milk   wine  
+## bread             0.0421     0.5412 0.3086 0.4370  0.0004 0.3371
+## vegetables 0.0421            0.0004 0.0002 0.0009  0.0188 0.2554
+## fruits     0.5412 0.0004            &lt;.0001 &lt;.0001  0.2915 0.1089
+## meat       0.3086 0.0002     &lt;.0001        &lt;.0001  0.2303 0.1552
+## poultry    0.4370 0.0009     &lt;.0001 &lt;.0001         0.4663 0.1974
+## milk       0.0004 0.0188     0.2915 0.2303 0.4663         0.9831
+## wine       0.3371 0.2554     0.1089 0.1552 0.1974  0.9831       
+## 
+##  Adjusted p-values (Holm&#39;s method)
+##            bread  vegetables fruits meat   poultry milk   wine  
+## bread             0.5471     1.0000 1.0000 1.0000  0.0064 1.0000
+## vegetables 0.5471            0.0064 0.0028 0.0137  0.2635 1.0000
+## fruits     1.0000 0.0064            &lt;.0001 0.0003  1.0000 1.0000
+## meat       1.0000 0.0028     &lt;.0001        &lt;.0001  1.0000 1.0000
+## poultry    1.0000 0.0137     0.0003 &lt;.0001         1.0000 1.0000
+## milk       0.0064 0.2635     1.0000 1.0000 1.0000         1.0000
+## wine       1.0000 1.0000     1.0000 1.0000 1.0000  1.0000</code></pre>
+<p>KMO Test (Kaiser-Meyer-Olkin)</p>
+<pre class="r"><code>library(psych)
+
+KMO(food)</code></pre>
+<pre><code>## Kaiser-Meyer-Olkin factor adequacy
+## Call: KMO(r = food)
+## Overall MSA =  0.46
+## MSA for each item = 
+##      bread vegetables     fruits       meat    poultry       milk       wine 
+##       0.55       0.51       0.50       0.48       0.46       0.39       0.25</code></pre>
 <ul>
-<li><p>Vegetables</p></li>
-<li><p>Fruits</p></li>
-<li><p>Meat</p></li>
-<li><p>Poultry</p></li>
+<li>0.00 to 0.49 unacceptable</li>
+<li>0.50 to 0.59 miserable</li>
 </ul>
-<p>Other link :</p>
-<ul>
-<li>Bread and wine.</li>
-</ul>
-<p>PCA variable vs type of job :</p>
-<pre class="r"><code>list_var&lt;-colnames(food)[1:7]
-pval_list &lt;-rep(NA,7)
-for(i in 1:7){
-  pval_list[i]&lt;-round(summary(aov(food[,i] ~ food$work_type))[[1]][1,5],4)
+<p>The Kaiser–Meyer–Olkin (KMO) test is a statistical measure to determine how suited data is for factor analysis.</p>
+<p>Factor analysis does not seem to be very suitable for our data.</p>
+<pre class="r"><code>scree(food, pc=FALSE)  # Use pc=FALSE for factor analysis</code></pre>
+<pre><code>## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+## The estimated weights for the factor scores are probably incorrect. Try a
+## different factor score estimation method.</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-4-1.png" width="672" /> Two axes will be chosen to explain FA.</p>
+<p>Realisation FA</p>
+<pre class="r"><code>fa.food &lt;- factanal(food, factors = 2, rotation=&quot;varimax&quot;) #factor = 2 : number axis.
+print(fa.food, digits=2, cutoff=.6, sort=TRUE)</code></pre>
+<pre><code>## 
+## Call:
+## factanal(x = food, factors = 2, rotation = &quot;varimax&quot;)
+## 
+## Uniquenesses:
+##      bread vegetables     fruits       meat    poultry       milk       wine 
+##       0.27       0.09       0.09       0.00       0.01       0.00       0.79 
+## 
+## Loadings:
+##            Factor1 Factor2
+## vegetables  0.75          
+## fruits      0.93          
+## meat        0.96          
+## poultry     0.99          
+## bread               0.85  
+## milk                0.99  
+## wine                      
+## 
+##                Factor1 Factor2
+## SS loadings       3.55    2.20
+## Proportion Var    0.51    0.31
+## Cumulative Var    0.51    0.82
+## 
+## Test of the hypothesis that 2 factors are sufficient.
+## The chi square statistic is 23.27 on 8 degrees of freedom.
+## The p-value is 0.00303</code></pre>
+<pre class="r"><code>library(psych)
 
-}
+loads &lt;- fa.food$loadings
 
-(TAB&lt;-cbind(list_var,pval_list))</code></pre>
-<pre><code>##      list_var     pval_list
-## [1,] &quot;bread&quot;      &quot;0.7619&quot; 
-## [2,] &quot;vegetables&quot; &quot;0.1276&quot; 
-## [3,] &quot;fruits&quot;     &quot;0.0028&quot; 
-## [4,] &quot;meat&quot;       &quot;0.0059&quot; 
-## [5,] &quot;poultry&quot;    &quot;0.0011&quot; 
-## [6,] &quot;milk&quot;       &quot;0.9125&quot; 
-## [7,] &quot;wine&quot;       &quot;0.0842&quot;</code></pre>
-<p>fruits, meat, poultry and Wine-consomation have a link with the job.</p>
-<p>PCA variable vs number of children :</p>
-<pre class="r"><code>list_var&lt;-colnames(food)[1:7]
-pval_list_2 &lt;-rep(NA,7)
-for(i in 1:7){
-  pval_list_2[i]&lt;-round(summary(aov(food[,i] ~ food$number_children))[[1]][1,5],4)
+fa.diagram(loads)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-6-1.png" width="672" /> axis 1 : poultry / meat / fruits / vegetables / (wine..)</p>
+<p>axis 2 : Milk / bread</p>
+<pre class="r"><code>load &lt;- fa.food$loadings[,1:2] 
+plot(load,type=&quot;n&quot;) 
+text(load,labels=names(food),cex=.7)
 
-}
+lines(c(-1,1),c(0,0), lty = 3)
+lines(c(0,0),c(-1,1), lty = 3)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>rbPal &lt;- colorRampPalette(c(&#39;red&#39;,&#39;blue&#39;))
 
-(TAB&lt;-cbind(list_var,pval_list_2))</code></pre>
-<pre><code>##      list_var     pval_list_2
-## [1,] &quot;bread&quot;      &quot;2e-04&quot;    
-## [2,] &quot;vegetables&quot; &quot;0.0089&quot;   
-## [3,] &quot;fruits&quot;     &quot;0.1943&quot;   
-## [4,] &quot;meat&quot;       &quot;0.0785&quot;   
-## [5,] &quot;poultry&quot;    &quot;0.1735&quot;   
-## [6,] &quot;milk&quot;       &quot;0&quot;        
-## [7,] &quot;wine&quot;       &quot;0.8763&quot;</code></pre>
-<p>bread, vegetables and milk have a link with number of children.</p>
-<p><span class="math inline">\(\huge{Second \ \ step :\ PCA \ Realisation}\)</span></p>
-<pre class="r"><code>res&lt;-PCA(food, scale.unit = TRUE, ncp = 5, 
-    quanti.sup = 9, quali.sup = 8, graph = F)</code></pre>
-<p>Quality of representation of axes.</p>
-<pre class="r"><code>fviz_eig(res, addlabels = TRUE, ylim = c(0, 65))</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>(eig.val &lt;- round(get_eigenvalue(res),1))</code></pre>
-<pre><code>##       eigenvalue variance.percent cumulative.variance.percent
-## Dim.1        4.3             61.9                        61.9
-## Dim.2        1.8             26.1                        88.1
-## Dim.3        0.6              9.0                        97.1
-## Dim.4        0.1              1.8                        98.9
-## Dim.5        0.1              0.8                        99.7
-## Dim.6        0.0              0.3                       100.0
-## Dim.7        0.0              0.0                       100.0</code></pre>
-<p>88.1% of information is present in the two first factorial axes.</p>
-<pre class="r"><code>var &lt;- get_pca_var(res)</code></pre>
-<p>Variable graph :</p>
-<pre class="r"><code>fviz_pca_var(res, col.var = &quot;cos2&quot;,
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE 
-             )</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>What does each axis represent?</p>
-<pre class="r"><code>corrplot(var$contrib, is.corr=FALSE)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code># Coordonnee
-round(var$coord[,1:2],3)</code></pre>
-<pre><code>##             Dim.1  Dim.2
-## bread       0.499  0.842
-## vegetables  0.970  0.133
-## fruits      0.929 -0.278
-## meat        0.962 -0.191
-## poultry     0.911 -0.266
-## milk        0.584  0.707
-## wine       -0.428  0.648</code></pre>
-<p>1st axis : it represents vegetables, fruits, meat and poultry positively. The people on the right side of the graph of individuals are people consuming a lot of these products.</p>
-<p>2nd axis : This axis represents the variables milk vine and bread.Individuals at the top of the individual graph consume more than the average of these products.</p>
-<pre class="r"><code># Cos2:répresentation quality
-round(var$cos2[,1:2],3)</code></pre>
-<pre><code>##            Dim.1 Dim.2
-## bread      0.249 0.708
-## vegetables 0.940 0.018
-## fruits     0.863 0.077
-## meat       0.926 0.037
-## poultry    0.830 0.071
-## milk       0.341 0.500
-## wine       0.183 0.420</code></pre>
-<p>We note the bad represenation of the wine variable. It is preferable not to interpret this variable for the rest of the analysis</p>
-<p>Graph of individuals</p>
-<pre class="r"><code>ind &lt;- get_pca_ind(res)</code></pre>
-<p>quality and contribution</p>
-<pre class="r"><code>fviz_pca_ind(res, col.ind = &quot;cos2&quot;, 
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE # Avoid text overlapping (slow if many points)
-             )</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>All individuals seem to be well represented on these first two axes.With the exception of CA2.</p>
-<pre class="r"><code># Total contribution on PC1 and PC2
-fviz_contrib(res, choice = &quot;ind&quot;, axes = 1:2)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-14-1.png" width="672" /> This graph shows us that the individual “CA5” contributes more than 39% to the creation of the first two axes.</p>
-<p>Moreover, “CA2” and “EM4” contribute less than 3% to this creation.</p>
-<pre class="r"><code>fviz_pca_ind(res,  label=&quot;none&quot;, habillage=8)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>fviz_pca_ind(res,  label=&quot;none&quot;, habillage=9)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-15-2.png" width="672" /> We notice that the groups seem to form lines.</p>
-<p>For the graph highlighting the type of work, we can see that the line formed by the “MA” points is further to the left than the “CA” points.</p>
-<p>For the graph showing the number of children in colour, the lines are present but in the other direction.</p>
-<p>The more children the family has, the further to the top right they are for the same type of occupation. This seems to be correct, as the top right corner means that all products except wine are consumed more than the average.</p>
-<p>With the same number of children, families with a manual trade (MA) seem to consume more wine.</p>
+loadings &lt;- data.frame(fa.food$loadings[,1:2])
+
+loadings$colF1 &lt;- rbPal(20)[as.numeric(cut(loadings[,1],breaks = seq(-1,1,length = 20)))]
+loadings$nam1 &lt;- paste(row.names(loadings), round(loadings[,1], digits = 3), sep = &quot;\n&quot;)
+loadings$colF2 &lt;- rbPal(20)[as.numeric(cut(loadings[,2],breaks = seq(-1,1,length = 20)))]
+loadings$nam2 &lt;- paste(row.names(loadings), round(loadings[,2], digits = 3), sep = &quot;\n&quot;)
+
+
+par(mfrow = c(2,1))
+barplot(abs(loadings[,1]), col = loadings$colF1, ylim = c(0,1), ylab = &quot;Factor 1&quot;, names.arg = loadings$nam1, cex.names = 0.8)
+barplot(abs(loadings[,2]), col = loadings$colF2, ylim = c(0,1), ylab = &quot;Factor 2&quot;, names.arg = loadings$nam2, cex.names = 0.8)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-8-1.png" width="672" /> representation of each variable on each axis</p>
+<pre class="r"><code>round(fa.food$loadings, 3)</code></pre>
+<pre><code>## 
+## Loadings:
+##            Factor1 Factor2
+## bread       0.101   0.850 
+## vegetables  0.754   0.588 
+## fruits      0.926   0.236 
+## meat        0.959   0.275 
+## poultry     0.985   0.131 
+## milk        0.105   0.992 
+## wine       -0.459         
+## 
+##                Factor1 Factor2
+## SS loadings      3.548   2.204
+## Proportion Var   0.507   0.315
+## Cumulative Var   0.507   0.822</code></pre>
+<p>Comparaison with PCA :</p>
+<p>During the PCA we also noticed that it was necessary to keep just 2 axes.</p>
+<p>Resultat :</p>
+<pre class="r"><code>res&lt;-PCA(food, scale.unit = TRUE, ncp = 5, graph = F)
+var &lt;- get_pca_var(res)
+corrplot(var$contrib, is.corr=FALSE)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>This graph shows that the important variables for each axis are the same for PCA and FA.</p>
 
 
 
@@ -494,7 +533,7 @@ $(document).ready(function () {
 <meta name="author" content="Guillaume Pain" />
 
 
-<title>Practical 6</title>
+<title>Practical 7</title>
 
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -751,7 +790,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Practical 6</h1>
+<h1 class="title toc-ignore">Practical 7</h1>
 <h4 class="author">Guillaume Pain</h4>
 <h4 class="date">23/03/2022</h4>
 
@@ -759,8 +798,10 @@ $(document).ready(function () {
 
 
 <p>Import Data and pacakge</p>
-<pre class="r"><code>#install.packages(pkgs=&quot;http://www.karlin.mff.cuni.cz/~hlavka/sms2/SMSdata_1.0.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)
-library(SMSdata)
+<pre class="r"><code>install.packages(pkgs=&quot;http://www.karlin.mff.cuni.cz/~hlavka/sms2/SMSdata_1.0.tar.gz&quot;, repos=NULL, type=&quot;source&quot;)</code></pre>
+<pre><code>## Installation du package dans &#39;C:/Users/guill/OneDrive/Documents/R/win-library/4.1&#39;
+## (car &#39;lib&#39; n&#39;est pas spécifié)</code></pre>
+<pre class="r"><code>library(SMSdata)
 data(food)
 library(&quot;FactoMineR&quot;)</code></pre>
 <pre><code>## Warning: le package &#39;FactoMineR&#39; a été compilé avec la version R 4.1.3</code></pre>
@@ -784,134 +825,171 @@ library(&quot;FactoMineR&quot;)</code></pre>
 <pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<p>The objective of this assignment is to perform a PCA on data. PCA is used to describe a dataset with many individuals and quantitative variables. The analysis extracts the relevant information and summarises it in the form of principal components, new axes to describe the dataset.</p>
-<p><span class="math inline">\(\huge{First \ \ step :\ Explain \ data}\)</span></p>
-<p>The data set consists of the average expenditures on food for several different types of families in France (manual workers = MA, employees = EM, managers = CA) with different numbers of children (2,3,4 or 5 children).</p>
-<p>We can create two illustrative variables. Works and numbers of children.</p>
-<pre class="r"><code>food$work_type&lt;-str_sub(row.names(food), 1, 2)
-food$number_children&lt;-as.numeric(str_sub(row.names(food), 3, 3))</code></pre>
-<p><span class="math inline">\(\huge{Second \ \ step : Analyse \ the \ link \ between \ variables.}\)</span></p>
-<p>PCA variable :</p>
-<pre class="r"><code>qgraph(cor(food[,1:7]))</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>corrplot(cor(food[,1:7]), method=&quot;ellipse&quot;)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-3-2.png" width="672" /> We note a large 4-variable relationship :</p>
+<pre class="r"><code>library(psych)</code></pre>
+<pre><code>## Warning: le package &#39;psych&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;psych&#39;</code></pre>
+<pre><code>## Les objets suivants sont masqués depuis &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<p>Evaluate the correlation matrix</p>
+<pre class="r"><code>library(RcmdrMisc)</code></pre>
+<pre><code>## Warning: le package &#39;RcmdrMisc&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## Le chargement a nécessité le package : car</code></pre>
+<pre><code>## Le chargement a nécessité le package : carData</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;car&#39;</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:psych&#39;:
+## 
+##     logit</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:dplyr&#39;:
+## 
+##     recode</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:purrr&#39;:
+## 
+##     some</code></pre>
+<pre><code>## Le chargement a nécessité le package : sandwich</code></pre>
+<pre><code>## Warning: le package &#39;sandwich&#39; a été compilé avec la version R 4.1.3</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;RcmdrMisc&#39;</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:psych&#39;:
+## 
+##     reliability</code></pre>
+<pre class="r"><code>rcorr.adjust(food) # This function is build into R Commander.</code></pre>
+<pre><code>## 
+##  Pearson correlations:
+##             bread vegetables  fruits    meat poultry   milk    wine
+## bread      1.0000     0.5931  0.1961  0.3213  0.2480 0.8556  0.3038
+## vegetables 0.5931     1.0000  0.8563  0.8811  0.8268 0.6628 -0.3565
+## fruits     0.1961     0.8563  1.0000  0.9595  0.9255 0.3322 -0.4863
+## meat       0.3213     0.8811  0.9595  1.0000  0.9818 0.3746 -0.4372
+## poultry    0.2480     0.8268  0.9255  0.9818  1.0000 0.2329 -0.4002
+## milk       0.8556     0.6628  0.3322  0.3746  0.2329 1.0000  0.0069
+## wine       0.3038    -0.3565 -0.4863 -0.4372 -0.4002 0.0069  1.0000
+## 
+##  Number of observations: 12 
+## 
+##  Pairwise two-sided p-values:
+##            bread  vegetables fruits meat   poultry milk   wine  
+## bread             0.0421     0.5412 0.3086 0.4370  0.0004 0.3371
+## vegetables 0.0421            0.0004 0.0002 0.0009  0.0188 0.2554
+## fruits     0.5412 0.0004            &lt;.0001 &lt;.0001  0.2915 0.1089
+## meat       0.3086 0.0002     &lt;.0001        &lt;.0001  0.2303 0.1552
+## poultry    0.4370 0.0009     &lt;.0001 &lt;.0001         0.4663 0.1974
+## milk       0.0004 0.0188     0.2915 0.2303 0.4663         0.9831
+## wine       0.3371 0.2554     0.1089 0.1552 0.1974  0.9831       
+## 
+##  Adjusted p-values (Holm&#39;s method)
+##            bread  vegetables fruits meat   poultry milk   wine  
+## bread             0.5471     1.0000 1.0000 1.0000  0.0064 1.0000
+## vegetables 0.5471            0.0064 0.0028 0.0137  0.2635 1.0000
+## fruits     1.0000 0.0064            &lt;.0001 0.0003  1.0000 1.0000
+## meat       1.0000 0.0028     &lt;.0001        &lt;.0001  1.0000 1.0000
+## poultry    1.0000 0.0137     0.0003 &lt;.0001         1.0000 1.0000
+## milk       0.0064 0.2635     1.0000 1.0000 1.0000         1.0000
+## wine       1.0000 1.0000     1.0000 1.0000 1.0000  1.0000</code></pre>
+<p>KMO Test (Kaiser-Meyer-Olkin)</p>
+<pre class="r"><code>library(psych)
+
+KMO(food)</code></pre>
+<pre><code>## Kaiser-Meyer-Olkin factor adequacy
+## Call: KMO(r = food)
+## Overall MSA =  0.46
+## MSA for each item = 
+##      bread vegetables     fruits       meat    poultry       milk       wine 
+##       0.55       0.51       0.50       0.48       0.46       0.39       0.25</code></pre>
 <ul>
-<li><p>Vegetables</p></li>
-<li><p>Fruits</p></li>
-<li><p>Meat</p></li>
-<li><p>Poultry</p></li>
+<li>0.00 to 0.49 unacceptable</li>
+<li>0.50 to 0.59 miserable</li>
 </ul>
-<p>Other link :</p>
-<ul>
-<li>Bread and wine.</li>
-</ul>
-<p>PCA variable vs type of job :</p>
-<pre class="r"><code>list_var&lt;-colnames(food)[1:7]
-pval_list &lt;-rep(NA,7)
-for(i in 1:7){
-  pval_list[i]&lt;-round(summary(aov(food[,i] ~ food$work_type))[[1]][1,5],4)
+<p>The Kaiser–Meyer–Olkin (KMO) test is a statistical measure to determine how suited data is for factor analysis.</p>
+<p>Factor analysis does not seem to be very suitable for our data.</p>
+<pre class="r"><code>scree(food, pc=FALSE)  # Use pc=FALSE for factor analysis</code></pre>
+<pre><code>## Warning in fa.stats(r = r, f = f, phi = phi, n.obs = n.obs, np.obs = np.obs, :
+## The estimated weights for the factor scores are probably incorrect. Try a
+## different factor score estimation method.</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-4-1.png" width="672" /> Two axes will be chosen to explain FA.</p>
+<p>Realisation FA</p>
+<pre class="r"><code>fa.food &lt;- factanal(food, factors = 2, rotation=&quot;varimax&quot;) #factor = 2 : number axis.
+print(fa.food, digits=2, cutoff=.6, sort=TRUE)</code></pre>
+<pre><code>## 
+## Call:
+## factanal(x = food, factors = 2, rotation = &quot;varimax&quot;)
+## 
+## Uniquenesses:
+##      bread vegetables     fruits       meat    poultry       milk       wine 
+##       0.27       0.09       0.09       0.00       0.01       0.00       0.79 
+## 
+## Loadings:
+##            Factor1 Factor2
+## vegetables  0.75          
+## fruits      0.93          
+## meat        0.96          
+## poultry     0.99          
+## bread               0.85  
+## milk                0.99  
+## wine                      
+## 
+##                Factor1 Factor2
+## SS loadings       3.55    2.20
+## Proportion Var    0.51    0.31
+## Cumulative Var    0.51    0.82
+## 
+## Test of the hypothesis that 2 factors are sufficient.
+## The chi square statistic is 23.27 on 8 degrees of freedom.
+## The p-value is 0.00303</code></pre>
+<pre class="r"><code>library(psych)
 
-}
+loads &lt;- fa.food$loadings
 
-(TAB&lt;-cbind(list_var,pval_list))</code></pre>
-<pre><code>##      list_var     pval_list
-## [1,] &quot;bread&quot;      &quot;0.7619&quot; 
-## [2,] &quot;vegetables&quot; &quot;0.1276&quot; 
-## [3,] &quot;fruits&quot;     &quot;0.0028&quot; 
-## [4,] &quot;meat&quot;       &quot;0.0059&quot; 
-## [5,] &quot;poultry&quot;    &quot;0.0011&quot; 
-## [6,] &quot;milk&quot;       &quot;0.9125&quot; 
-## [7,] &quot;wine&quot;       &quot;0.0842&quot;</code></pre>
-<p>fruits, meat, poultry and Wine-consomation have a link with the job.</p>
-<p>PCA variable vs number of children :</p>
-<pre class="r"><code>list_var&lt;-colnames(food)[1:7]
-pval_list_2 &lt;-rep(NA,7)
-for(i in 1:7){
-  pval_list_2[i]&lt;-round(summary(aov(food[,i] ~ food$number_children))[[1]][1,5],4)
+fa.diagram(loads)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-6-1.png" width="672" /> axis 1 : poultry / meat / fruits / vegetables / (wine..)</p>
+<p>axis 2 : Milk / bread</p>
+<pre class="r"><code>load &lt;- fa.food$loadings[,1:2] 
+plot(load,type=&quot;n&quot;) 
+text(load,labels=names(food),cex=.7)
 
-}
+lines(c(-1,1),c(0,0), lty = 3)
+lines(c(0,0),c(-1,1), lty = 3)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>rbPal &lt;- colorRampPalette(c(&#39;red&#39;,&#39;blue&#39;))
 
-(TAB&lt;-cbind(list_var,pval_list_2))</code></pre>
-<pre><code>##      list_var     pval_list_2
-## [1,] &quot;bread&quot;      &quot;2e-04&quot;    
-## [2,] &quot;vegetables&quot; &quot;0.0089&quot;   
-## [3,] &quot;fruits&quot;     &quot;0.1943&quot;   
-## [4,] &quot;meat&quot;       &quot;0.0785&quot;   
-## [5,] &quot;poultry&quot;    &quot;0.1735&quot;   
-## [6,] &quot;milk&quot;       &quot;0&quot;        
-## [7,] &quot;wine&quot;       &quot;0.8763&quot;</code></pre>
-<p>bread, vegetables and milk have a link with number of children.</p>
-<p><span class="math inline">\(\huge{Second \ \ step :\ PCA \ Realisation}\)</span></p>
-<pre class="r"><code>res&lt;-PCA(food, scale.unit = TRUE, ncp = 5, 
-    quanti.sup = 9, quali.sup = 8, graph = F)</code></pre>
-<p>Quality of representation of axes.</p>
-<pre class="r"><code>fviz_eig(res, addlabels = TRUE, ylim = c(0, 65))</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>(eig.val &lt;- round(get_eigenvalue(res),1))</code></pre>
-<pre><code>##       eigenvalue variance.percent cumulative.variance.percent
-## Dim.1        4.3             61.9                        61.9
-## Dim.2        1.8             26.1                        88.1
-## Dim.3        0.6              9.0                        97.1
-## Dim.4        0.1              1.8                        98.9
-## Dim.5        0.1              0.8                        99.7
-## Dim.6        0.0              0.3                       100.0
-## Dim.7        0.0              0.0                       100.0</code></pre>
-<p>88.1% of information is present in the two first factorial axes.</p>
-<pre class="r"><code>var &lt;- get_pca_var(res)</code></pre>
-<p>Variable graph :</p>
-<pre class="r"><code>fviz_pca_var(res, col.var = &quot;cos2&quot;,
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE 
-             )</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>What does each axis represent?</p>
-<pre class="r"><code>corrplot(var$contrib, is.corr=FALSE)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code># Coordonnee
-round(var$coord[,1:2],3)</code></pre>
-<pre><code>##             Dim.1  Dim.2
-## bread       0.499  0.842
-## vegetables  0.970  0.133
-## fruits      0.929 -0.278
-## meat        0.962 -0.191
-## poultry     0.911 -0.266
-## milk        0.584  0.707
-## wine       -0.428  0.648</code></pre>
-<p>1st axis : it represents vegetables, fruits, meat and poultry positively. The people on the right side of the graph of individuals are people consuming a lot of these products.</p>
-<p>2nd axis : This axis represents the variables milk vine and bread.Individuals at the top of the individual graph consume more than the average of these products.</p>
-<pre class="r"><code># Cos2:répresentation quality
-round(var$cos2[,1:2],3)</code></pre>
-<pre><code>##            Dim.1 Dim.2
-## bread      0.249 0.708
-## vegetables 0.940 0.018
-## fruits     0.863 0.077
-## meat       0.926 0.037
-## poultry    0.830 0.071
-## milk       0.341 0.500
-## wine       0.183 0.420</code></pre>
-<p>We note the bad represenation of the wine variable. It is preferable not to interpret this variable for the rest of the analysis</p>
-<p>Graph of individuals</p>
-<pre class="r"><code>ind &lt;- get_pca_ind(res)</code></pre>
-<p>quality and contribution</p>
-<pre class="r"><code>fviz_pca_ind(res, col.ind = &quot;cos2&quot;, 
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE # Avoid text overlapping (slow if many points)
-             )</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>All individuals seem to be well represented on these first two axes.With the exception of CA2.</p>
-<pre class="r"><code># Total contribution on PC1 and PC2
-fviz_contrib(res, choice = &quot;ind&quot;, axes = 1:2)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-14-1.png" width="672" /> This graph shows us that the individual “CA5” contributes more than 39% to the creation of the first two axes.</p>
-<p>Moreover, “CA2” and “EM4” contribute less than 3% to this creation.</p>
-<pre class="r"><code>fviz_pca_ind(res,  label=&quot;none&quot;, habillage=8)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>fviz_pca_ind(res,  label=&quot;none&quot;, habillage=9)</code></pre>
-<p><img src="practical6_files/figure-html/unnamed-chunk-15-2.png" width="672" /> We notice that the groups seem to form lines.</p>
-<p>For the graph highlighting the type of work, we can see that the line formed by the “MA” points is further to the left than the “CA” points.</p>
-<p>For the graph showing the number of children in colour, the lines are present but in the other direction.</p>
-<p>The more children the family has, the further to the top right they are for the same type of occupation. This seems to be correct, as the top right corner means that all products except wine are consumed more than the average.</p>
-<p>With the same number of children, families with a manual trade (MA) seem to consume more wine.</p>
+loadings &lt;- data.frame(fa.food$loadings[,1:2])
+
+loadings$colF1 &lt;- rbPal(20)[as.numeric(cut(loadings[,1],breaks = seq(-1,1,length = 20)))]
+loadings$nam1 &lt;- paste(row.names(loadings), round(loadings[,1], digits = 3), sep = &quot;\n&quot;)
+loadings$colF2 &lt;- rbPal(20)[as.numeric(cut(loadings[,2],breaks = seq(-1,1,length = 20)))]
+loadings$nam2 &lt;- paste(row.names(loadings), round(loadings[,2], digits = 3), sep = &quot;\n&quot;)
+
+
+par(mfrow = c(2,1))
+barplot(abs(loadings[,1]), col = loadings$colF1, ylim = c(0,1), ylab = &quot;Factor 1&quot;, names.arg = loadings$nam1, cex.names = 0.8)
+barplot(abs(loadings[,2]), col = loadings$colF2, ylim = c(0,1), ylab = &quot;Factor 2&quot;, names.arg = loadings$nam2, cex.names = 0.8)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-8-1.png" width="672" /> representation of each variable on each axis</p>
+<pre class="r"><code>round(fa.food$loadings, 3)</code></pre>
+<pre><code>## 
+## Loadings:
+##            Factor1 Factor2
+## bread       0.101   0.850 
+## vegetables  0.754   0.588 
+## fruits      0.926   0.236 
+## meat        0.959   0.275 
+## poultry     0.985   0.131 
+## milk        0.105   0.992 
+## wine       -0.459         
+## 
+##                Factor1 Factor2
+## SS loadings      3.548   2.204
+## Proportion Var   0.507   0.315
+## Cumulative Var   0.507   0.822</code></pre>
+<p>Comparaison with PCA :</p>
+<p>During the PCA we also noticed that it was necessary to keep just 2 axes.</p>
+<p>Resultat :</p>
+<pre class="r"><code>res&lt;-PCA(food, scale.unit = TRUE, ncp = 5, graph = F)
+var &lt;- get_pca_var(res)
+corrplot(var$contrib, is.corr=FALSE)</code></pre>
+<p><img src="practical7_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>This graph shows that the important variables for each axis are the same for PCA and FA.</p>
 
 
 
@@ -960,4 +1038,4 @@ $(document).ready(function () {
 
 </body>
 </html>
->>>>>>> 3054b9828a2f39c3fb9c5c75ba83fac70e96654a
+>>>>>>> 2a47bf1a43722cb50f2e11a2176e89bae2edff5c
